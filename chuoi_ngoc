@@ -1,0 +1,304 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string>
+#define MaxSize 50
+
+void NhapChuoi(char str[MaxSize]);
+void XuatChuoi(char str[MaxSize]);
+void SoSanhHaiChuoi(char S1[MaxSize], char S2[MaxSize]);
+int ChieuDai(char S[MaxSize]);
+void ChuyenVeChuThuong(char S[MaxSize]);
+void ChuDauVietHoa(char S[MaxSize]);
+void ChuanHoa(char S[MaxSize]);
+int DemSoTu(char S[MaxSize]);
+void XuatTungTu(char S[MaxSize]);
+void XoaCacKhoangTrang(char S[MaxSize]);
+int DemKiTuDacBiet(char S[MaxSize]);
+void XoaKiTuDacBiet(char S[MaxSize]);
+void NoiChuoi(char S1[MaxSize], char S2[MaxSize]);
+void TrichHo(char S[MaxSize]);
+int TimFirstSpace(char S[MaxSize]);
+int TimLastSpace(char S[MaxSize]);
+void Copy(char S[MaxSize], char Sm[MaxSize], int bd, int kt);
+void TrichLot(char S[MaxSize], char Shl[MaxSize]);
+void TrichTen(char S[MaxSize], char STen[MaxSize]);
+
+void main()
+{
+	char S1[MaxSize], S2[MaxSize];
+	char STen[MaxSize], Shl[MaxSize];
+	printf("\t\n nhap chuoi S1: ");
+	NhapChuoi(S1);
+	printf("\t\n chuoi S1: ");
+	XuatChuoi(S1);
+
+	printf("\t\n nhap chuoi S2: ");
+	NhapChuoi(S2);
+	printf("\t\n chuoi S2: ");
+	XuatChuoi(S2);
+
+	SoSanhHaiChuoi(S1, S2);
+
+	printf("\t\n Chuyen ve chu thuong la: ");
+	ChuyenVeChuThuong(S1);
+
+	printf("\t\n chu dau viet hoa: ");
+	ChuDauVietHoa(S1);
+
+	printf("\t\n Sau khi sua thanh: ");
+	ChuanHoa(S1);
+
+
+	printf("\t\n So tu la: %d", DemSoTu(S1));
+
+	printf("\t\n cac chu xuong dong: ");
+	XuatTungTu(S1);
+
+	printf("\t\n xoa tat ca khoang trang: ");
+	XoaCacKhoangTrang(S1);
+	printf("\t\n So ky tu dac biet: %d", DemKiTuDacBiet(S1));
+	printf("\t\n Xoa Ky tu dac biet: ");
+	XoaKiTuDacBiet(S1);
+	//printf("\t\n Noi chuoi: ");
+	//NoiChuoi(S1, S2);
+	printf("\t\nHo: ");
+	TrichHo(S1);
+	TrichLot(S1, Shl);
+	TrichTen(S1, STen);
+	getch();
+}
+
+void NhapChuoi(char str[MaxSize])
+{
+	fflush(stdin);
+	gets_s(str, MaxSize);
+}
+
+void XuatChuoi(char str[MaxSize])
+{
+	puts(str);
+}
+
+int ChieuDai(char S[MaxSize])
+{
+	int i = 0;
+	while (S[i] != NULL)
+		i++;
+	return i;
+}
+
+void SoSanhHaiChuoi(char S1[MaxSize], char S2[MaxSize])
+{
+	if (strcmp(S1, S2) < 0)
+		printf("\t\n Chuoi S1 < chuoi S2\n");
+	else
+		if (strcmp(S1, S2) > 0)
+			printf("\t\n Chuoi S1 > Chuoi S2\n");
+		else
+			printf("\t\n Chuoi S1 == chuoi S2\n");
+}
+
+void ChuyenVeChuThuong(char S[MaxSize])
+{
+	for (int i = 0; i < strlen(S); i++)
+		if (S[i] >= 'A' && S[i] <= 'Z')
+			S[i] = S[i] + 32;
+	XuatChuoi(S);
+}
+
+void ChuDauVietHoa(char S[MaxSize])
+{
+	for (int i = 0; i < strlen(S); i++)
+		if (S[0] >= 'a' && S[0] <= 'z')
+			S[0] = S[0] - 32;
+	XuatChuoi(S);
+}
+
+void ChuanHoa(char S[MaxSize])
+{
+	int n = strlen(S);
+	//Xoa khoang trang dau chuoi
+	while (S[0] == ' ')
+	{
+		for (int i = 0; i < n; i++)
+			S[i] = S[i + 1];
+		S[n - 1] = NULL;
+		n = n - 1;
+	}
+	/*Xoa trang trang cuoi chuoi*/
+	while (S[n - 1] == ' ')
+	{
+		S[n - 1] = NULL;
+		n = n - 1;
+	}
+	/*Xoa khoang trang thua o giua*/
+	for (int i = 1; i < n - 1; i++)
+	{
+		while (S[i] == ' ' && S[i + 1] == ' ')
+		{
+			for (int j = i; j < n - 1; j++)
+				S[j] = S[j + 1];
+			S[n - 1] = NULL;
+			n--;
+		}
+	}
+	XuatChuoi(S);
+}
+
+void DaoChuoi(char S[MaxSize])
+{
+	int n = strlen(S);
+	int i = 0;
+	int j = n - 1;
+	while (i < j)
+	{
+		char temp = S[i];
+		S[i] = S[j];
+		S[j] = temp;
+		i++;
+		j--;
+	}
+	XuatChuoi;
+}
+
+int DemSoTu(char S[MaxSize])
+{
+	ChuanHoa(S);
+	int i = 0;
+	int dem = 0;
+	while (S[i] != NULL)
+	{
+		if (S[i] == ' ' && S[i + 1] != ' ')
+			dem++;
+		i++;
+	}
+	return dem + 1;
+}
+
+void XuatTungTu(char S[MaxSize])
+{
+	ChuanHoa(S);
+	int i = 0;
+	while (S[i] != NULL)
+	{
+		if (S[i] != ' ')
+		{
+			printf("%c", S[i]);
+		}
+		else
+			printf("\n");
+		i++;
+	}
+}
+
+void XoaCacKhoangTrang(char S[MaxSize])
+{
+	ChuanHoa(S);
+	int i = 0;
+	while (S[i] != NULL)
+	{
+		if (S[i] != ' ')
+		{
+			printf("%c", S[i]);
+		}
+		i++;
+	}
+}
+
+int DemKiTuDacBiet(char S[MaxSize])
+{
+	int dem = 0;
+	for (int i = 0; i < strlen(S); i++)
+	{
+		if (!((S[i] >= 'A' && S[i] <= 'Z') || (S[i] >= 'a' && S[i] <= 'z') || (S[i] >= '0' && S[i] <= '9)') || (S[i] == ' ')))
+			dem++;
+	}
+	return dem;
+}
+
+void XoaKiTuDacBiet(char S[MaxSize])
+{
+	int n = strlen(S);
+	for (int i = 0; i < n; i++)
+	{
+		while (!((S[i] >= 'A' && S[i] <= 'Z') || (S[i] >= 'a' && S[i] <= 'z') || (S[i] >= '0' && S[i] <= '9)') || (S[i] == ' ')))
+		{
+			for (int j = i; j < n - 1; j++)
+				S[j] = S[j + 1];
+			S[n - 1] = NULL;
+			n--;
+		}
+	}
+	XuatChuoi(S);
+}
+
+void NoiChuoi(char S1[MaxSize], char S2[MaxSize])
+{
+	char S3[30]{ ' ' };
+	strcat(S1, S3);
+	strcat(S1, S2);
+	XuatChuoi(S1);
+}
+
+void TrichHo(char S[MaxSize])
+{
+	ChuanHoa(S);
+	int i = 0;
+	while (S[i] != ' ')
+	{
+		printf("%c", S[i]);
+		i++;
+	}
+}
+
+int TimFirstSpace(char S[MaxSize])
+{
+	ChuanHoa(S);
+	int i = 0;
+	while (S[i] != ' ')
+		i++;
+	return i;
+}
+int TimLastSpace(char S[MaxSize])
+{
+	ChuanHoa(S);
+	int i = strlen(S) - 1;
+	while (S[i] != ' ')
+		i--;
+	return i;
+}
+void Copy(char S[MaxSize], char Sm[MaxSize], int bd, int kt)
+{
+	int i = 0;
+	while (bd <= kt)
+	{
+		Sm[i] = S[bd];
+		i++;
+		bd++;
+	}
+	Sm[i] = NULL;
+}
+
+void TrichLot(char S[MaxSize], char Shl[MaxSize])
+{
+	int bd = TimFirstSpace(S);
+	int kt = TimLastSpace(S);
+	Copy(S, Shl, bd + 1, kt - 1);
+	printf("\t\n Ho lot: %s", Shl);
+}
+
+void TrichTen(char S[MaxSize], char STen[MaxSize])
+{
+	ChuanHoa(S);
+	int i = strlen(S) - 1;
+	int j = 0;
+	while (S[i] != ' ')
+	{
+		STen[j] = S[i];
+		i--;
+		j++;
+	}
+	STen[j] = NULL;
+	DaoChuoi(STen);
+	printf("\t\n Ten: %s", STen);
+}
