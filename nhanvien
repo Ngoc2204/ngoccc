@@ -1,0 +1,188 @@
+#include <stdio.h>
+#include <conio.h>
+#include <string.h>
+#include <math.h>
+#define Max 100
+
+struct Date
+{
+	int Ngay;
+	int Thang;
+	int Nam;
+};
+
+struct NhanVien
+{
+	int MSNV;
+	char Ho[11];
+	char Ten[31];
+	Date Namsinh;
+	char NoiSinh[100];
+	char DiaChi[100];
+	float Luong;
+	Date NgayCongTac;
+};
+
+struct DanhSach
+{
+	NhanVien a[Max];
+	int n;
+};
+
+void NhapNgayThang(Date& ntn);
+void XuatNgayThang(Date ntn);
+void NhapTT(NhanVien& nv);
+void XuatTT(NhanVien nv);
+void NhapDS(DanhSach& ds);
+void XuatDS(DanhSach ds);
+void ThemNV(DanhSach& ds);
+int TimTenTheoMSNV(DanhSach ds, int n);
+
+void main()
+{
+	int Chon, n;
+	DanhSach ds;
+	NhapDS(ds);
+	XuatDS(ds);
+	printf("\n\t\t--------------MENU--------------");
+	printf("\n\t 1.Them vao 1 nhan vien");
+	printf("\n\t 2.Tim nhan vien theo ma so");
+	printf("\n\t 3.Tim nhan vien thoe ten");
+	printf("\n\t 4.Bang luong cua  nhan vien giam dan");
+	printf("\n\t 5.Xoa 1 nhan vien");
+	printf("\n    *************************************************");
+	do
+	{
+		printf("\n\t Chon: ");
+		scanf_s("%d", &Chon);
+	switch (Chon)
+	{
+	case 1:
+		ThemNV(ds);
+		break;
+	case 2:
+		printf("\n\t Nhap Ma So nhan vien can tim: ");
+		scanf_s("%d", &n);
+		if(TimTenTheoMSNV(ds,n)==-1)
+			printf("\n\t Khong tim thay nhan vien co MSNV nay");
+		else
+			printf("\n\t Tim thay nhan vien thu %d", TimTenTheoMSNV(ds, n));
+	default:
+		break;
+	}
+	} while (Chon != 0);
+	_getch();
+}
+
+void NhapNgayThang(Date& ntn)
+{
+	do
+	{
+		printf("\n\t Nhap Ngay: ");
+		scanf_s("%d", &ntn.Ngay);
+	} while (ntn.Ngay<0||ntn.Ngay>31);
+	do
+	{
+		printf("\n\t Nhap Thang: ");
+		scanf_s("%d", &ntn.Thang);
+	} while (ntn.Thang < 0 || ntn.Thang>12);
+	printf("\n\t Nhap Nam: ");
+	scanf_s("%d", &ntn.Nam);
+}
+
+void XuatNgayThang(Date ntn)
+{
+	printf("%d - ", ntn.Ngay);
+	printf("%d - ", ntn.Thang);
+	printf("%d", ntn.Nam);
+}
+
+void NhapTT(NhanVien& nv)
+{
+	printf("\n\t Nhap Thong Tin Nhan Vien: ");
+	printf("\n\t Nhap MSNV: ");
+	scanf_s("%d", &nv.MSNV);
+	printf("\n\t Nhap Ho: ");
+	rewind(stdin);
+	gets_s(nv.Ho);
+	printf("\n\t Nhap Ten: ");
+	rewind(stdin);
+	gets_s(nv.Ten);
+	printf("\n\t Ngay Thang Nam Sinh");
+	NhapNgayThang(nv.Namsinh);
+	printf("\n\t Nhap Noi Sinh: ");
+	rewind(stdin);
+	gets_s(nv.NoiSinh);
+	printf("\n\t Nhap Dia Chi: ");
+	rewind(stdin);
+	gets_s(nv.DiaChi);
+	printf("\n\t Nhap Luong: ");
+	scanf_s("%f", &nv.Luong);
+	printf("\n\t Ngay Thang Nam Cong Tac");
+	NhapNgayThang(nv.NgayCongTac);
+}
+
+void XuatTT(NhanVien nv)
+{
+	printf("\n\t Thong Tin Nhan Vien: ");
+	printf("\n\t MSNV: %d", nv.MSNV);
+	printf("\n\t Ho: %s", nv.Ho);
+	printf("\n\t Ten: %s", nv.Ten);
+	printf("\n\t Ngay Thang Nam Sinh: ");
+	XuatNgayThang(nv.Namsinh);
+	printf("\n\t Noi Sinh: %s", nv.NoiSinh);
+	printf("\n\t Dia Chi: %s", nv.DiaChi);
+	printf("\n\t Luong: %.2f", nv.Luong);
+	printf("\n\t Thang Nam Cong Tac: ");
+	XuatNgayThang(nv.NgayCongTac);
+}
+
+void NhapDS(DanhSach& ds)
+{
+	printf("\n\t Nhap So Luong Nhan Vien: ");
+	scanf_s("%d", &ds.n);
+	for (int i = 0; i < ds.n; i++)
+	{
+		printf("\n\t Nhan Vien  Thu %d", i + 1);
+		NhapTT(ds.a[i]);
+	}
+}
+
+void XuatDS(DanhSach ds)
+{
+	for (int i = 0; i < ds.n; i++)
+	{
+		printf("\n\n\t Nhan Vien  Thu %d", i + 1);
+		XuatTT(ds.a[i]);
+	}
+}
+
+void ThemNV(DanhSach& ds)
+{
+	int n;
+	NhanVien nv;
+	printf("\n\t Nhap Vi tri Can them: ");
+	scanf_s("%d", &n);
+	NhapTT(nv);
+	for (int i = ds.n; i > n; i--)
+	{
+		ds.a[i] = ds.a[i - 1];
+	}
+	ds.a[n] = nv;
+	ds.n++;
+	printf("\n\t\t\tdanh sach sau khi them");
+	XuatDS(ds);
+}
+
+int TimTenTheoMSNV(DanhSach ds, int n)
+{
+	for (int i = 0; i < ds.n; i++)
+	{
+		if (ds.a[i].MSNV == n)
+		{
+			return i+1;
+
+		}
+	}
+	return -1;
+}
